@@ -1,6 +1,6 @@
 #!/usr/bin/python
-from os import listdir
-from os.path import isfile, join
+from os import listdir, makedirs
+from os.path import isfile, join, exists, isdir
 import argparse
 import json
 import os
@@ -9,12 +9,28 @@ import sys
 def command_line():
     parser = argparse.ArgumentParser(prog='fio-parser.py',description='%(prog)s is used to parse fio output files')
     parser.add_argument('--directory','-d',type=str,help='Specify the directory with fio output files to parse.  If none if provided, ./ is used')
+    #parser.add_argument('--output','-rod',type=str,help='Specify the output file to dump results.  If none, output is to screen')
     arg = vars(parser.parse_args())
 
     if not arg['directory']:
         directory=os.getcwd()
     else:
         directory=arg['directory']
+    '''
+    if arg['output']:
+       if '/' in arg['output']:
+           dir = '/'.join(arg['output'].split('/')[:-1])
+           output_file = arg['output'].split('/')[-1]
+           if ! output_file:
+              print('--output %s missing file name, exiting' % (arg['output'])
+              exit()
+       else:
+           dir='./'
+           output_file = arg['output']
+
+       if isdir(dir):
+    '''
+       
     file_list = get_file_list(directory)
     return file_list
 
@@ -41,10 +57,12 @@ def get_file_list(directory):
         exit()
 
 def parse_files(file_list):
+    total_output_list = ['fio_file,reads,read_bw(MiB/s),read_lat(ms),writes,write_bw(MIB/s),write_lat(ms)']
     for working_file in file_list:
         with open( working_file,'r') as fh:
             file_content = fh.readlines()
-        extract_content(file_content, working_file)
+        extract_content(file_content, working_file, total_output_list)
+    return total_output_list
 
 def bandwidth_conversion(line):
    bandwidth = (line.split(','))[1].split(' ')[1].split('=')[1]
@@ -79,8 +97,10 @@ def lat_conversion(line):
         
   
 
-def extract_content(content, working_file):
-    output=(working_file.split('/')[-1])
+def extract_content(content, working_file,total_output_list=None):
+    #if total_output_list = None:
+    #    total_output_list = ['fio_file,reads,read_bw(MiB/s),read_lat(ms),writes,write_bw(MIB/s),write_lat(ms)']
+    output=working_file.split('/')[-1]
     parsed_content={}
     for line in content:
        line=line.strip()
@@ -108,9 +128,10 @@ def extract_content(content, working_file):
         output += ((',%s,%s') % (parsed_content['write_iop'],parsed_content['write_bw']))
     if 'write_lat' in parsed_content.keys():
         output += ((',%s') % (parsed_content['write_lat']))
-    print(output)
-
+    total_output_list.append(output)
 
 file_list = command_line()
-parse_files(file_list)
+output = parse_files(file_list)
+for line in output:
+    print line
 

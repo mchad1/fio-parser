@@ -1,6 +1,10 @@
 # fio-parser
 This repository contains code used to parse fio normal output (as in non json)
 
-% fio-parser -d <directory containing fio output files>
-  
- If -d is not specified, the current directory is assumed
+usage: fio-parser.py [-h] [--directory DIRECTORY]
+
+optional arguments:
+  -h, --help            show this help message and exit
+  --directory DIRECTORY, -d DIRECTORY
+                        Specify the directory with fio output files to parse.
+                        If none if provided, ./ is used
