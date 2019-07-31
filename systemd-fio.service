@@ -1,4 +1,4 @@
-#/lib/systemd/system/fio.service
+#/etc/systemd/system/fio.service
 [Unit]
 Description=fio service
 
