@@ -46,10 +46,8 @@ def get_file_list(directory):
             abs_path = ('%s/%s' % (directory,files))
             #with open( abs_path,'rb') as fh:
             with open( abs_path,'r') as fh:
-                #if b'\x00' not in fh.read():
                 if 'fio-parser.py' not in files:
                     if 'IO depths' in fh.read():
-                        print(abs_path)
                         file_list.append('%s/%s' % (directory,files))
         if (len(file_list)) > 0:
             return file_list
