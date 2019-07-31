@@ -44,9 +44,13 @@ def get_file_list(directory):
         #Check for non binary files and make a list of them
         for files in onlyfiles:
             abs_path = ('%s/%s' % (directory,files))
-            with open( abs_path,'rb') as fh:
-                if b'\x00' not in fh.read():
-                    file_list.append('%s/%s' % (directory,files))
+            #with open( abs_path,'rb') as fh:
+            with open( abs_path,'r') as fh:
+                #if b'\x00' not in fh.read():
+                if 'fio-parser.py' not in files:
+                    if 'IO depths' in fh.read():
+                        print(abs_path)
+                        file_list.append('%s/%s' % (directory,files))
         if (len(file_list)) > 0:
             return file_list
         else:
@@ -104,7 +108,7 @@ def extract_content(content, working_file,total_output_list=None):
     parsed_content={}
     for line in content:
        line=line.strip()
-       if 'read: IOP' in  line:
+       if 'read: IOP' in line:
            parsed_content['read_iop']= io_conversion(line)
            parsed_content['read_bw'] = bandwidth_conversion(line)
        if 'read_iop' in parsed_content.keys():
