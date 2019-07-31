@@ -1,0 +1,2 @@
+#/usr/bin/start-all.sh
+fio --server
