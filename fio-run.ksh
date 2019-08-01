@@ -1,5 +1,7 @@
 #!/usr/bin/ksh
-
+#Change the diredtory=<   > to your directory where in I/O is written
+#When you run, ./fio-run /mnt/cvs/output 64  <-- outstanding I/O
+#for try in {1..6}; do for depth in 200 100 64 32 16 8 4 2 1; do ./fio-run /mnt/cvs/output/point$try $depth ; done; done
 if [[ -z $1 ]]; then
     echo "Please enter a base directory for output and config files"
     exit
@@ -83,6 +85,7 @@ for count in 32 ; do
 	       #max=10
 	       max=64
            fi
+	   max=$2
 	   i=$max
 	   min=0
 	   (( min = max - 1 ))
