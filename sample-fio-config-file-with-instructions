@@ -33,3 +33,4 @@ ramp_time=20              #Warm up
 % fio --clients=/home/user/hosts config
 
 Note: To do this latter test, make sure that fio --server is running on all machines.  For help doing this see 
+https://github.com/mchad1/fio-parser/blob/master/get-fio-hosts-ready
