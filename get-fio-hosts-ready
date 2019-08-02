@@ -1,0 +1,47 @@
+#######FIO on SLES15 #######
+add key
+create root key
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh localhost
+
+sudo zypper update
+sudo zypper install -y git gcc vim nfs-utils fio net-tools-deprecated
+sudo git clone https://github.com/mchad1/fio-parser.git
+
+sudo cp systemd-fio.service /etc/systemd/system/fio.service
+sudo cp start-all /usr/bin/start-all.sh
+sudo systemctl enable fio.service
+sudo systemctl start fio.service
+
+modify /etc/fstab:
+Storage IP:/volume  /mnt/point  nfs   nconnect=16,noatime
+
+golden image
+Clone - clone- clone
+
+(Open firewalls to port 8765 for fio)
+create an image from this machine and create a scaling group to quickly create and tear down fio instances
+
+#From the master:
+fio --clients=[<file containing ip addresses of fio clients> || ip addresses]  configfile
+
+####### FIO on UBUNTU #######
+add key
+create root key
+cat ~/.ssh/id_rsa.pub >> ~/.ssh/authorized_keys
+ssh localhost
+
+sudo apt-get update
+sudo apt-get install -y git gcc vim nfs-utils fio
+sudo git clone https://github.com/mchad1/fio-parser.git
+
+sudo cp systemd-fio.service /lib/systemd/system/fio.service
+sudo cp start-all /usr/bin/start-all.sh
+sudo systemctl enable fio.service
+sudo systemctl start fio.service
+
+modify /etc/fstab:
+Storage IP:/volume  /mnt/point  nfs   noatime
+
+golden image
+Clone - clone- clone
