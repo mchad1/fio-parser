@@ -20,6 +20,20 @@ ramp_time=20              #Warm up
 [rw]
 [randrw]
 
+
+#Note: to figure out iodpepth for a single instance test:
+use a ping of the storage to find the latency.
+Then multiply target io count like this (io count * (latency/1000))
+What ever the number is, use that for iodepth IF numjobs=1.  Otherwise divide number by numjobs
+and set iodepth to the result.
+
+#Note: to figure out iodepth for multiple instance test:
+use a ping of the storage to find the latency.
+Then multiply target io count like this (iocount * (latency/1000))
+What ever that number is, divide it by the produce of numjobs * num scale out instances
+Set iodepth to the result of that math.  iodepth = (iocount * (latency/1000)) / (numbjobs * num scale out client)
+
+
 #Sample run Single instance:
 % fio config
 
