@@ -30,7 +30,10 @@ ramp_time=20              #Warm up
 10.10.10.13
 10.10.10.14
 
-% fio --clients=/home/user/hosts config
+% fio --clients=/home/user/hosts config  --output=<nfs shared directory>/file
 
 Note: To do this latter test, make sure that fio --server is running on all machines.  For help doing this see 
 https://github.com/mchad1/fio-parser/blob/master/get-fio-hosts-ready
+
+#To parse files, used fio-parser.py found in this repo.
+
