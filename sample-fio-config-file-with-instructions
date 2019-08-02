@@ -1,0 +1,35 @@
+#Sample FIO Config File
+% vim /home/user/configfile
+[global]
+name=fio-test
+directory=/mnt/nfs-fio-1  #This is the directory where files are written
+ioengine=libaio           #Async threads, jobs turned over to asynch threads and core moves on
+direct=1                  #Use directio, if you use libaio and NFS this must be set to 1 enabling directio
+numjobs=1                 #To match how many users on the system
+nrfiles=4                 #Num files per job
+runtime=30                #If time_based is set, run for this amount of time
+group_reporting           #This is used to aggregate the job results, otherwise you have lots of data to parse
+time_based                #This setting says run the jobs until this much time has elapsed
+stonewall
+bs=64K
+rw=rw||randrw             #choose rw if sequential io, choose randrw for random io          
+rwmixread=100             #<-- Modify to get different i/o distributions
+iodepth=15                #<-- Modify this to get the i/o they want (latency * target op count)
+size=10G                  #Aggregate file size per job (if nrfiles = 4, files=2.5GiB)
+ramp_time=20              #Warm up
+[rw]
+[randrw]
+
+#Sample run Single instance:
+% fio config
+
+#Sample multi instance run
+% cat /home/users/hosts
+10.10.10.11
+10.10.10.12
+10.10.10.13
+10.10.10.14
+
+% fio --clients=/home/user/hosts config
+
+Note: To do this latter test, make sure that fio --server is running on all machines.  For help doing this see 
