@@ -21,7 +21,7 @@ job=crap
 #for count in 32 16 8 4 2 1; do 
 #for count in 32 1 ; do 
 #for count in 5 1 ; do 
-for count in 32 ; do 
+for count in  32 1 ; do 
     #Create Directories, exit on error"
     dir=${base_dir}/${count}vms/$workingset
     config_dir=${dir}/config
@@ -67,8 +67,7 @@ for count in 32 ; do
         fi
         #for mix in 100 50 0; do
         #for mix in 100 90 80 70 60 50 40 30 20 10 0; do
-        for mix in 100 0; do
-        #for mix in 50; do
+        for mix in 100 75 50 25 0; do
            if [[ $mix == 0 ]]; then
 	       #max= 15
 	       max=64
@@ -92,13 +91,13 @@ for count in 32 ; do
 	   while [[ $i -gt $min ]]; do
                echo "[global]" > config-$count
                echo "name=fio-test" >> config-$count
-               echo "directory=/mnt/nfs-fio-1" >> config-$count
+               echo "directory=/mnt/chad-nfsvol1" >> config-$count
                echo "ioengine=libaio" >> config-$count
                echo "direct=1" >> config-$count
                echo "numjobs=4" >> config-$count
                echo "nrfiles=100" >> config-$count
                echo "runtime=600" >> config-$count
-               echo "group_reporting" >> config-$count
+               echo "group_reporting=1" >> config-$count
                echo "time_based" >> config-$count
                echo "stonewall" >> config-$count
                echo "bs=${iosize}K" >> config-$count
@@ -112,14 +111,14 @@ for count in 32 ; do
 	       file="vm$count-iodepth$i-filesize$size-bs$iosize-rwmix$mix"
 
 	       #Run Stuff Here
-               echo fio --client=/mnt/nfs-fio-1/fio-hosts-$count --output-format=normal --output=../output/output-${file} --group_reporting --section=$rw config-${file} > ${config_dir}/command-${file}
+               echo fio --client=/mnt/chad-nfsvol1/fio-hosts-$count --output-format=normal --output=../output/output-${file} --group_reporting --section=$rw config-${file} > ${config_dir}/command-${file}
 	       cat config-$count > ${config_dir}/config-${file}
-               fio --client=/mnt/nfs-fio-1/fio-hosts-$count --output-format=normal --output=${output_dir}/output-$file  --group_reporting --section=$rw config-$count
+               fio --client=/mnt/chad-nfsvol1/fio-hosts-$count --output-format=normal --output=${output_dir}/output-$file  --group_reporting --section=$rw config-$count
 	       (( i = i - 1 ))
            done 
         done
     done
-    echo /mnt/nfs-fio-1/fio-shutdown-post-$count
-    #/mnt/nfs-fio-1/fio-shutdown-post-$count
-    #/mnt/nfs-fio-1/fio-stop
+    echo /mnt/chad-nfsvol1/fio-shutdown-post-$count
+    #/mnt/chad-nfsvol1/fio-shutdown-post-$count
+    #/mnt/chad-nfsvol1/fio-stop
  done

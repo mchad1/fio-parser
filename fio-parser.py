@@ -50,6 +50,7 @@ def get_file_list(directory):
                     if 'IO depths' in fh.read():
                         file_list.append('%s/%s' % (directory,files))
         if (len(file_list)) > 0:
+            file_list
             return file_list
         else:
             print('No text files found')
@@ -63,7 +64,9 @@ def parse_files(file_list):
     for working_file in file_list:
         with open( working_file,'r') as fh:
             file_content = fh.readlines()
-        extract_content(file_content, working_file, total_output_list)
+        #extract_content(file_content, working_file, total_output_list)
+        parsed_content = extract_content(file_content)
+        total_output(parsed_content, total_output_list, working_file)
     return total_output_list
 
 def bandwidth_conversion(line):
@@ -98,28 +101,51 @@ def lat_conversion(line):
     return lat
         
   
+#look for 'All clients in file', if found, this file contains
+#The contents ofd a multi host job
+def single_or_multi_job(content):
+    for line in content:
+        if 'All clients:' in line:
+            return True
+    return False
+        
+def search(parsed_content,line):
+    if 'read: IOP' in line:
+        parsed_content['read_iop']= io_conversion(line)
+        parsed_content['read_bw'] = bandwidth_conversion(line)
+    if 'read_iop' in parsed_content.keys():
+        if line[0:3] == 'lat' and 'read_lat' not in parsed_content.keys():
+            parsed_content['read_lat'] = lat_conversion(line)
+ 
+    if 'write: IOP' in  line:
+        parsed_content['write_iop']= io_conversion(line)
+        parsed_content['write_bw'] = bandwidth_conversion(line)
+    if 'write_iop' in parsed_content.keys():
+        if line[0:3] == 'lat' and 'write_lat' not in parsed_content.keys():
+            parsed_content['write_lat'] = lat_conversion(line)
+   
 
-def extract_content(content, working_file,total_output_list=None):
-    #if total_output_list = None:
-    #    total_output_list = ['fio_file,reads,read_bw(MiB/s),read_lat(ms),writes,write_bw(MIB/s),write_lat(ms)']
-    output=working_file.split('/')[-1]
+def extract_content(content):
+    multihost = single_or_multi_job(content)
     parsed_content={}
+    if multihost == True:
+        begin_search = False
+    else:
+        begin_search = True
+
     for line in content:
        line=line.strip()
-       if 'read: IOP' in line:
-           parsed_content['read_iop']= io_conversion(line)
-           parsed_content['read_bw'] = bandwidth_conversion(line)
-       if 'read_iop' in parsed_content.keys():
-           if line[0:3] == 'lat' and 'read_lat' not in parsed_content.keys():
-               parsed_content['read_lat'] = lat_conversion(line)
+       if multihost == True:
+           if 'All clients:' in line:
+               begin_search = True
+       if begin_search == True:
+           search(parsed_content,line) 
+       #Exit search here
+       if begin_search == True and 'IO depths' in line:
+           return parsed_content 
 
-       if 'write: IOP' in  line:
-           parsed_content['write_iop']= io_conversion(line)
-           parsed_content['write_bw'] = bandwidth_conversion(line)
-       if 'write_iop' in parsed_content.keys():
-           if line[0:3] == 'lat' and 'write_lat' not in parsed_content.keys():
-               parsed_content['write_lat'] = lat_conversion(line)
-
+def total_output(parsed_content, total_output_list, working_file):
+    output = working_file.split('/')[-1]
     if 'read_iop' in parsed_content.keys():
         output += ((',%s,%s') % (parsed_content['read_iop'],parsed_content['read_bw']))
     if 'read_lat' in parsed_content.keys():
