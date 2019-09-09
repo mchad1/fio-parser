@@ -21,7 +21,7 @@ job=crap
 #for count in 32 16 8 4 2 1; do 
 #for count in 32 1 ; do 
 #for count in 5 1 ; do 
-for count in  8 ; do 
+for count in 1 ; do 
     #Create Directories, exit on error"
     dir=${base_dir}/${count}vms/$workingset
     config_dir=${dir}/config
@@ -93,7 +93,7 @@ for count in  8 ; do
                echo "direct=1" >> config-$count
                echo "numjobs=4" >> config-$count
                echo "nrfiles=100" >> config-$count
-               echo "runtime=600" >> config-$count
+               echo "runtime=60" >> config-$count
                echo "group_reporting=1" >> config-$count
                echo "time_based" >> config-$count
                echo "stonewall" >> config-$count
