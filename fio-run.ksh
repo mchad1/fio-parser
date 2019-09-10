@@ -21,7 +21,7 @@ job=crap
 #for count in 32 16 8 4 2 1; do 
 #for count in 32 1 ; do 
 #for count in 5 1 ; do 
-for count in 1 ; do 
+for count in 6 ; do 
     #Create Directories, exit on error"
     dir=${base_dir}/${count}vms/$workingset
     config_dir=${dir}/config
@@ -42,9 +42,9 @@ for count in 1 ; do
     elif [[ $count == 16 ]]; then
 	#size=10M
         size=16G
-    elif [[ $count == 8 ]]; then
+    elif [[ $count == 6 ]]; then
 	#size=10M
-	size=32G
+	size=42G
     elif [[ $count == 5 ]]; then
 	#size=10M
 	size=52G
@@ -93,7 +93,7 @@ for count in 1 ; do
                echo "direct=1" >> config-$count
                echo "numjobs=4" >> config-$count
                echo "nrfiles=100" >> config-$count
-               echo "runtime=60" >> config-$count
+               echo "runtime=600" >> config-$count
                echo "group_reporting=1" >> config-$count
                echo "time_based" >> config-$count
                echo "stonewall" >> config-$count
