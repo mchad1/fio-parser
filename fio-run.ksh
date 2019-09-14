@@ -21,7 +21,7 @@ job=crap
 #for count in 32 16 8 4 2 1; do 
 #for count in 32 1 ; do 
 #for count in 5 1 ; do 
-for count in 6 ; do 
+for count in 1 ; do 
     #Create Directories, exit on error"
     dir=${base_dir}/${count}vms/$workingset
     config_dir=${dir}/config
