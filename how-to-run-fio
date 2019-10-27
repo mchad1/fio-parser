@@ -44,7 +44,7 @@ Set iodepth to the result of that math.  iodepth = (iocount * (latency/1000)) / 
 10.10.10.13
 10.10.10.14
 
-% fio --clients=/home/user/hosts configfile --output=<nfs shared directory>/file
+% fio --client=/home/user/hosts configfile --output=<nfs shared directory>/file
 
 Note: To do this latter test, make sure that fio --server is running on all machines.  For help doing this see 
 https://github.com/mchad1/fio-parser/blob/master/get-fio-hosts-ready
