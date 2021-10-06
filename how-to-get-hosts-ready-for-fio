@@ -8,7 +8,7 @@ sudo zypper update
 sudo zypper install -y git gcc vim nfs-utils fio net-tools-deprecated
 sudo git clone https://github.com/mchad1/fio-parser.git
 
-sudo cp systemd-fio.service /etc/systemd/system/fio.service
+sudo cp sfio.service /etc/systemd/system/fio.service
 sudo cp start-all /usr/bin/start-all.sh
 sudo systemctl enable fio.service
 sudo systemctl start fio.service
@@ -35,7 +35,7 @@ sudo apt-get update
 sudo apt-get install -y git gcc vim nfs-utils fio
 sudo git clone https://github.com/mchad1/fio-parser.git
 
-sudo cp systemd-fio.service /lib/systemd/system/fio.service
+sudo cp fio.service /lib/systemd/system/fio.service
 sudo cp start-all /usr/bin/start-all.sh
 sudo systemctl enable fio.service
 sudo systemctl start fio.service
