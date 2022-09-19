@@ -161,5 +161,5 @@ def total_output(parsed_content, total_output_list, working_file):
 file_list = command_line()
 output = parse_files(file_list)
 for line in output:
-    print line
+    print(line)
 
