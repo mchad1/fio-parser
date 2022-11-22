@@ -74,11 +74,11 @@ def bandwidth_conversion(line):
    if 'Mi' in bandwidth:
        bandwidth = bandwidth.split('M')[0]
    elif 'Ki' in bandwidth:
-       bandwidth = int(bandwidth.split('K')[0]) / 2**10 
+       bandwidth = float(bandwidth.split('K')[0]) / 2**10 
    elif 'Gi' in bandwidth:
-       bandwidth = int(bandwidth.split('K')[0]) * 2**20 
+       bandwidth = float(bandwidth.split('G')[0]) * 2**10 
    elif 'Ti' in bandwidth:
-       bandwidth = int(bandwidth.split('K')[0]) * 2**30 
+       bandwidth = float(bandwidth.split('T')[0]) * 2**20 
    return bandwidth
 
 def io_conversion(line):
